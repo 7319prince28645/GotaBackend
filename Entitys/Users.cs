@@ -22,6 +22,8 @@ namespace ApiGotadevida.Entitys
         [Required]
         public string Password { get; set; }
 
+        public UserProfile UserProfile { get; set; }
+
 
     }
 }

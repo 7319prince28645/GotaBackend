@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiGotadevida.Migrations
 {
     [DbContext(typeof(GotaAGotaContext))]
-    [Migration("20240315201905_MiMigration")]
-    partial class MiMigration
+    [Migration("20240325200403_AddUser2")]
+    partial class AddUser2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,36 +28,28 @@ namespace ApiGotadevida.Migrations
             modelBuilder.Entity("ApiGotadevida.Entitys.UserProfile", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateOnly>("Birth")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("Birth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("BloodType")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Department")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Disease")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("District")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -102,25 +94,26 @@ namespace ApiGotadevida.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserProfileId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserProfileId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ApiGotadevida.Entitys.Users", b =>
+            modelBuilder.Entity("ApiGotadevida.Entitys.UserProfile", b =>
                 {
-                    b.HasOne("ApiGotadevida.Entitys.UserProfile", "UserProfile")
-                        .WithMany()
-                        .HasForeignKey("UserProfileId")
+                    b.HasOne("ApiGotadevida.Entitys.Users", "User")
+                        .WithOne("UserProfile")
+                        .HasForeignKey("ApiGotadevida.Entitys.UserProfile", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserProfile");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ApiGotadevida.Entitys.Users", b =>
+                {
+                    b.Navigation("UserProfile")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

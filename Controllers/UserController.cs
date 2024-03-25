@@ -28,10 +28,17 @@ namespace ApiGotadevida.Controllers
         }
         [HttpPost]
         [Route("api/CrearUser")]
-        public async Task<ActionResult> crearUser(UserDTO userDTO)
+        public async Task<ActionResult> CrearUser(UserCreateDTO userCreateDTO)
         {
-             var createUser = mapper.Map<Users>(userDTO);
+             var createUser = mapper.Map<Users>(userCreateDTO);
             context.Add(createUser);
+            await context.SaveChangesAsync();
+
+            var profile = new UserProfile
+            {
+                Id = createUser.Id
+            };
+            context.Add(profile);
             await context.SaveChangesAsync();
 
             return StatusCode(201);

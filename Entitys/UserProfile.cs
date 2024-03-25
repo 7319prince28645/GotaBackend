@@ -4,38 +4,36 @@ namespace ApiGotadevida.Entitys
 {
     public class UserProfile
     {
+        [Key]
         public int Id { get; set; }
 
-        [Required]
-        public DateOnly Birth { get; set; }
+        public DateTime? Birth { get; set; }
 
-        [Required]
         [MaxLength(100)]
-        public string Address { get; set; } = null!;
+        public string? Address { get; set; }
 
-        [Required]
-        [MaxLength(50)] 
-        public string Department { get; set; } = null!;
+        [MaxLength(50)]
+        public string? Department { get; set; }
 
-        [Required]
-        [MaxLength(50)] 
-        public string District { get; set; } = null!;
+        [MaxLength(50)]
+        public string? District { get; set; }
 
-        [Required]
         [MaxLength(10)]
-        public string BloodType { get; set; } = null!;
+        public string? BloodType { get; set; }
 
         public bool Tatto { get; set; }
 
-        [Range(0, int.MaxValue)] 
+        [Range(0, int.MaxValue)]
         public int MonthsTatto { get; set; }
 
         public bool Piercing { get; set; }
 
-        [Range(0, int.MaxValue)] 
+        [Range(0, int.MaxValue)]
         public int MonthsPiercing { get; set; }
 
-        [MaxLength(100)] 
-        public string Disease { get; set; } = null!;
+        [MaxLength(100)]
+        public string? Disease { get; set; }
+
+        public Users User { get; set; }
     }
 }

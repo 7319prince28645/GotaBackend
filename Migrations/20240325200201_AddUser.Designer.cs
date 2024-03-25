@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiGotadevida.Migrations
 {
     [DbContext(typeof(GotaAGotaContext))]
-    [Migration("20240315202428_Helo")]
-    partial class Helo
+    [Migration("20240325200201_AddUser")]
+    partial class AddUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,18 +28,15 @@ namespace ApiGotadevida.Migrations
             modelBuilder.Entity("ApiGotadevida.Entitys.UserProfile", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateOnly>("Birth")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Birth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("BloodType")
                         .IsRequired()
@@ -105,6 +102,23 @@ namespace ApiGotadevida.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ApiGotadevida.Entitys.UserProfile", b =>
+                {
+                    b.HasOne("ApiGotadevida.Entitys.Users", "User")
+                        .WithOne("UserProfile")
+                        .HasForeignKey("ApiGotadevida.Entitys.UserProfile", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ApiGotadevida.Entitys.Users", b =>
+                {
+                    b.Navigation("UserProfile")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

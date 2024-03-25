@@ -135,3 +135,4 @@ C:\Users\Linda pc\source\repos\ApiGotadevida\ApiGotadevida\obj\Debug\net8.0\refi
 C:\Users\Linda pc\source\repos\ApiGotadevida\ApiGotadevida\obj\Debug\net8.0\ApiGotadevida.pdb
 C:\Users\Linda pc\source\repos\ApiGotadevida\ApiGotadevida\obj\Debug\net8.0\ApiGotadevida.genruntimeconfig.cache
 C:\Users\Linda pc\source\repos\ApiGotadevida\ApiGotadevida\obj\Debug\net8.0\ref\ApiGotadevida.dll
+C:\Users\Linda pc\source\repos\ApiGotadevida\ApiGotadevida\obj\Debug\net8.0\ApiGotadevida.sourcelink.json
