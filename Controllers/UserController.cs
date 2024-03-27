@@ -20,17 +20,38 @@ namespace ApiGotadevida.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> getUser()
+        [HttpPost("Login")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> getUser(LoginDTO loginDTO)
         {
-            var usuario= await context.Users.Select(u=> mapper.Map<UserDTO>(u)).ToListAsync();
-            return Ok(usuario);
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == loginDTO.Email && u.Password == loginDTO.Password);
+            if (user == null)
+            {
+                return Unauthorized(); 
+            }
+
+            var userMapper = mapper.Map<UserDTO>(user);
+            return Ok(userMapper);
+        }
+        [HttpGet("profile/{id}")]
+        public async Task<ActionResult<IEnumerable<UserListProfileDTO>>> getUserProfile(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("ID debe ser mayor que cero.");
+            }
+            var userProfileFound = await context.Profiles.Where(u => u.Id == id).Select(u => mapper.Map<UserListProfileDTO>(u)).FirstOrDefaultAsync();
+
+            if (userProfileFound == null)
+            {
+                return NotFound();
+            }
+            return Ok(userProfileFound);
         }
         [HttpPost]
         [Route("api/CrearUser")]
         public async Task<ActionResult> CrearUser(UserCreateDTO userCreateDTO)
         {
-             var createUser = mapper.Map<Users>(userCreateDTO);
+            var createUser = mapper.Map<Users>(userCreateDTO);
             context.Add(createUser);
             await context.SaveChangesAsync();
 
@@ -42,6 +63,36 @@ namespace ApiGotadevida.Controllers
             await context.SaveChangesAsync();
 
             return StatusCode(201);
+        }
+        [HttpPut]
+        [Route("update/{id}")]
+        public async Task<ActionResult> UpdateUser(int id, UserListProfileDTO userListProfileDTO)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            var userprofile = await context.Profiles.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (userprofile == null)
+            {
+                return NotFound();
+            }
+
+            mapper.Map(userListProfileDTO, userprofile);
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al actualizar el perfil de usuario: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+
+            return Ok(userprofile);
         }
     }
 }

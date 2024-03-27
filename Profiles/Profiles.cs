@@ -10,6 +10,7 @@ namespace ApiGotadevida.Profiles
         {
             CreateMap<UserDTO, Users>().ReverseMap();
             CreateMap<Users, UserCreateDTO>().ReverseMap();
+            CreateMap<UserListProfileDTO, UserProfile>().ReverseMap();
         }
     }
 }
