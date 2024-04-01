@@ -19,6 +19,12 @@ namespace ApiGotadevida.Controllers
             this.context = context;
             this.mapper = mapper;
         }
+        [HttpGet("getUser/{id}")]
+        public async Task<ActionResult> getUserID(int id)
+        {
+            var userID = await context.Users.FindAsync(id);
+            return Ok(userID);
+        }
 
         [HttpPost("Login")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> getUser(LoginDTO loginDTO)
@@ -51,18 +57,25 @@ namespace ApiGotadevida.Controllers
         [Route("api/CrearUser")]
         public async Task<ActionResult> CrearUser(UserCreateDTO userCreateDTO)
         {
+            var existingUser = await context.Users.FirstOrDefaultAsync(u => u.Email == userCreateDTO.Email);
+            if (existingUser != null)
+            {
+                // El correo electrónico ya está en uso, devolver un error
+                return Conflict("El correo electrónico ya está registrado.");
+            }
             var createUser = mapper.Map<Users>(userCreateDTO);
             context.Add(createUser);
             await context.SaveChangesAsync();
 
             var profile = new UserProfile
             {
-                Id = createUser.Id
+                UserId = createUser.Id
             };
+
             context.Add(profile);
             await context.SaveChangesAsync();
 
-            return StatusCode(201);
+            return StatusCode(201); 
         }
         [HttpPut]
         [Route("update/{id}")]

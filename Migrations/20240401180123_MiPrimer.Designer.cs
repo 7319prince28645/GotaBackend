@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiGotadevida.Migrations
 {
     [DbContext(typeof(GotaAGotaContext))]
-    [Migration("20240325200201_AddUser")]
-    partial class AddUser
+    [Migration("20240401180123_MiPrimer")]
+    partial class MiPrimer
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,36 +25,56 @@ namespace ApiGotadevida.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ApiGotadevida.Entitys.PostUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Mensaje")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PostUsers");
+                });
+
             modelBuilder.Entity("ApiGotadevida.Entitys.UserProfile", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("Birth")
+                    b.Property<DateTime?>("Birth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("BloodType")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Department")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Disease")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("District")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -70,7 +90,13 @@ namespace ApiGotadevida.Migrations
                     b.Property<bool>("Tatto")
                         .HasColumnType("bit");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Profiles");
                 });
@@ -104,11 +130,22 @@ namespace ApiGotadevida.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ApiGotadevida.Entitys.PostUser", b =>
+                {
+                    b.HasOne("ApiGotadevida.Entitys.Users", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ApiGotadevida.Entitys.UserProfile", b =>
                 {
                     b.HasOne("ApiGotadevida.Entitys.Users", "User")
                         .WithOne("UserProfile")
-                        .HasForeignKey("ApiGotadevida.Entitys.UserProfile", "Id")
+                        .HasForeignKey("ApiGotadevida.Entitys.UserProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -117,6 +154,8 @@ namespace ApiGotadevida.Migrations
 
             modelBuilder.Entity("ApiGotadevida.Entitys.Users", b =>
                 {
+                    b.Navigation("Posts");
+
                     b.Navigation("UserProfile")
                         .IsRequired();
                 });

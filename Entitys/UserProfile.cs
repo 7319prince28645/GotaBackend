@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApiGotadevida.Entitys
 {
     public class UserProfile
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public DateTime? Birth { get; set; }
@@ -34,6 +36,7 @@ namespace ApiGotadevida.Entitys
         [MaxLength(100)]
         public string? Disease { get; set; }
 
+        public int UserId { get; set; }
         public Users User { get; set; }
     }
 }

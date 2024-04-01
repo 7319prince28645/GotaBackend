@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace ApiGotadevida.Entitys
 {
     public class Users
@@ -24,6 +23,6 @@ namespace ApiGotadevida.Entitys
 
         public UserProfile UserProfile { get; set; }
 
-
+        public ICollection<PostUser> Posts { get; set; }
     }
 }

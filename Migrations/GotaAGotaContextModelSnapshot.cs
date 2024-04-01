@@ -22,10 +22,39 @@ namespace ApiGotadevida.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ApiGotadevida.Entitys.PostUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PostUsers");
+                });
+
             modelBuilder.Entity("ApiGotadevida.Entitys.UserProfile", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .HasMaxLength(100)
@@ -62,7 +91,13 @@ namespace ApiGotadevida.Migrations
                     b.Property<bool>("Tatto")
                         .HasColumnType("bit");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Profiles");
                 });
@@ -96,11 +131,22 @@ namespace ApiGotadevida.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ApiGotadevida.Entitys.PostUser", b =>
+                {
+                    b.HasOne("ApiGotadevida.Entitys.Users", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ApiGotadevida.Entitys.UserProfile", b =>
                 {
                     b.HasOne("ApiGotadevida.Entitys.Users", "User")
                         .WithOne("UserProfile")
-                        .HasForeignKey("ApiGotadevida.Entitys.UserProfile", "Id")
+                        .HasForeignKey("ApiGotadevida.Entitys.UserProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -109,6 +155,8 @@ namespace ApiGotadevida.Migrations
 
             modelBuilder.Entity("ApiGotadevida.Entitys.Users", b =>
                 {
+                    b.Navigation("Posts");
+
                     b.Navigation("UserProfile")
                         .IsRequired();
                 });
