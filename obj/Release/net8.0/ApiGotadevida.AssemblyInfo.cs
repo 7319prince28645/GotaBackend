@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiGotadevida")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b33506fc502f956cc64e4cbe705cb9df8baa3593")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b3898bfec4b67a2764e673139fcc5b20bfb98d68")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiGotadevida")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiGotadevida")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
